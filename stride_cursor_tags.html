@@ -1,0 +1,574 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+/* Custom cursor */
+*{cursor:none !important}
+:root{
+  --bg:#080C10;--bg2:#0E1419;--bg3:#141C24;
+  --br:#00D68F;--brd:#00A86B;--brl:rgba(0,214,143,.12);
+  --ink:#F0F4F8;--ink2:#8896A4;--ink3:#4A5568;
+  --card:rgba(255,255,255,.04);--cardb:rgba(255,255,255,.08);
+  --pu:#818CF8;--acc:#F59E0B;--red:#F87171;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
+
+/* ── CUSTOM CURSOR ── */
+#cursor{position:fixed;top:0;left:0;pointer-events:none;z-index:99999;mix-blend-mode:normal}
+#cursor-dot{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--br);transform:translate(-50%,-50%);pointer-events:none;z-index:99999;transition:width .15s,height .15s,background .15s}
+#cursor-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(0,214,143,.5);transform:translate(-50%,-50%);pointer-events:none;z-index:99998;transition:width .2s,height .2s,border-color .2s;will-change:transform}
+#cursor-trail{position:fixed;width:6px;height:6px;border-radius:50%;background:rgba(0,214,143,.3);transform:translate(-50%,-50%);pointer-events:none;z-index:99997}
+body.cursor-hover #cursor-dot{width:12px;height:12px;background:var(--br)}
+body.cursor-hover #cursor-ring{width:48px;height:48px;border-color:rgba(0,214,143,.8);background:rgba(0,214,143,.05)}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(0,214,143,.25)}50%{box-shadow:0 0 50px rgba(0,214,143,.55)}}
+@keyframes barGrow{from{height:0}to{height:var(--h)}}
+@keyframes lineAnim{from{stroke-dashoffset:500}to{stroke-dashoffset:0}}
+@keyframes progressFill{from{width:0}to{width:var(--w)}}
+@keyframes notifSlide{0%{opacity:0;transform:translateY(20px)}15%{opacity:1;transform:translateY(0)}85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(20px)}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes orbit0{from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg)}to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg)}}
+@keyframes orbit1{from{transform:rotate(51.4deg) translateX(var(--r)) rotate(-51.4deg)}to{transform:rotate(411.4deg) translateX(var(--r)) rotate(-411.4deg)}}
+@keyframes orbit2{from{transform:rotate(102.8deg) translateX(var(--r)) rotate(-102.8deg)}to{transform:rotate(462.8deg) translateX(var(--r)) rotate(-462.8deg)}}
+@keyframes orbit3{from{transform:rotate(154.2deg) translateX(var(--r)) rotate(-154.2deg)}to{transform:rotate(514.2deg) translateX(var(--r)) rotate(-514.2deg)}}
+@keyframes orbit4{from{transform:rotate(205.6deg) translateX(var(--r)) rotate(-205.6deg)}to{transform:rotate(565.6deg) translateX(var(--r)) rotate(-565.6deg)}}
+@keyframes orbit5{from{transform:rotate(257deg) translateX(var(--r)) rotate(-257deg)}to{transform:rotate(617deg) translateX(var(--r)) rotate(-617deg)}}
+@keyframes orbit6{from{transform:rotate(308.4deg) translateX(var(--r)) rotate(-308.4deg)}to{transform:rotate(668.4deg) translateX(var(--r)) rotate(-668.4deg)}}
+
+.t-display,.t-heading,.t-sub,.logo,.stat-num,.sec-h,.feat-ttl,.step-title,.step-num,.tname,.pamt,.pp,.pbtn,.cta-banner h2,.flogo,.big-num,.app-title,.mm-val,.seg,.phone-time,.pt,.nc-title,.s1-chart-lbl,.ri-txt,.pr-head,.nav-links a,.nav-cta,.btn-p,.btn-g,.chip,.logos-lbl,.logo-item,.fw,.toast{font-family:'Space Grotesk',sans-serif}
+.grad{background:linear-gradient(135deg,var(--br) 0%,var(--pu) 60%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(8,12,16,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;z-index:100;animation:fadeIn .5s ease}
+.logo{font-size:1.35rem;font-weight:700;color:var(--ink);letter-spacing:-1px}
+.logo span{color:var(--br)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:.85rem;color:var(--ink2);text-decoration:none;transition:color .2s;font-weight:500}
+.nav-links a:hover{color:var(--ink)}
+.nav-right{display:flex;gap:.75rem;align-items:center}
+.nav-log{background:transparent;color:var(--ink2);border:none;padding:.5rem 1rem;font-family:'Inter',sans-serif;font-size:.85rem}
+.nav-cta{background:var(--br);color:#000;border:none;padding:.55rem 1.25rem;border-radius:8px;font-size:.85rem;font-weight:600;transition:all .2s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,214,143,.4)}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:6rem 2.5rem 5rem;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-blob1{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,214,143,.07) 0%,transparent 70%);top:-100px;left:-100px;pointer-events:none}
+.hero-blob2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(129,140,248,.05) 0%,transparent 70%);bottom:-50px;right:0;pointer-events:none}
+.hero-left{position:relative;z-index:1;animation:fadeUp .7s ease both .1s}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--brl);border:1px solid rgba(0,214,143,.25);color:var(--br);font-size:.7rem;font-weight:600;padding:.35rem .9rem;border-radius:100px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.75rem}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--br);animation:pulse 2s ease-in-out infinite}
+h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:3.6rem;line-height:1.06;letter-spacing:-2.5px;margin-bottom:1.5rem}
+.hero-sub{font-size:1rem;color:var(--ink2);line-height:1.75;margin-bottom:2.5rem;max-width:420px}
+.cta-row{display:flex;gap:.875rem;align-items:center;margin-bottom:2rem}
+.btn-p{background:var(--br);color:#000;border:none;padding:.85rem 1.85rem;border-radius:10px;font-size:.9rem;font-weight:600;transition:all .25s;letter-spacing:-.2px}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,214,143,.35)}
+.btn-g{background:var(--card);color:var(--ink);border:1px solid var(--cardb);padding:.85rem 1.5rem;border-radius:10px;font-size:.9rem;font-weight:500;transition:all .2s;backdrop-filter:blur(10px)}
+.btn-g:hover{border-color:var(--br);color:var(--br)}
+.social-proof{display:flex;align-items:center;gap:.875rem}
+.avatars{display:flex}
+.av{width:32px;height:32px;border-radius:50%;border:2px solid var(--bg);margin-left:-8px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif}
+.av:first-child{margin-left:0}
+.proof-text{font-size:.78rem;color:var(--ink2)}
+.proof-text strong{color:var(--ink)}
+
+/* HERO RIGHT — phone + floating tags closer */
+.hero-right{position:relative;display:flex;justify-content:center;z-index:1;animation:fadeUp .7s ease both .25s;padding:0 60px}
+
+/* Floating tags — closer to phone, styled like screenshot */
+.fw{
+  position:absolute;
+  background:rgba(18,24,32,.92);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:100px;
+  padding:.45rem 1rem;
+  font-size:.8rem;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  z-index:10;
+  backdrop-filter:blur(16px);
+  white-space:nowrap;
+  box-shadow:0 8px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06);
+  letter-spacing:-.2px;
+  color:var(--ink);
+}
+/* Positioned much closer — just outside phone edge */
+.fw1{top:60px;right:-8px;animation:floatB 4s ease-in-out infinite}
+.fw2{bottom:130px;left:-8px;animation:float 5s ease-in-out infinite}
+.fw3{top:46%;right:-8px;animation:floatB 6s ease-in-out infinite 1s}
+.fw-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* PHONE */
+.phone{width:260px;height:530px;background:#050810;border-radius:42px;padding:10px;border:1.5px solid rgba(255,255,255,.12);position:relative;box-shadow:0 40px 120px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08);animation:float 5s ease-in-out infinite;z-index:2}
+.phone-notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:75px;height:20px;background:#050810;border-radius:0 0 12px 12px;z-index:10;display:flex;align-items:center;justify-content:center;gap:6px}
+.notch-cam{width:7px;height:7px;border-radius:50%;background:#1a1a2e;border:1px solid #2a2a3e}
+.notch-sensor{width:18px;height:4px;background:#1a1a2e;border-radius:3px}
+.phone-screen{width:100%;height:100%;background:linear-gradient(180deg,#080C14 0%,#0a1018 100%);border-radius:32px;overflow:hidden;position:relative}
+.phone-status{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 4px;font-size:10px;color:rgba(255,255,255,.4)}
+.phone-time{font-weight:600;color:rgba(255,255,255,.9)}
+.sig-bar{width:3px;background:rgba(255,255,255,.6);border-radius:1px}
+.app-screens{position:relative;height:470px}
+.app-screen{position:absolute;inset:0;padding:0 12px;transition:opacity .45s,transform .45s;opacity:0;transform:translateX(16px);pointer-events:none}
+.app-screen.active{opacity:1;transform:translateX(0);pointer-events:auto}
+.app-header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 10px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:10px}
+.app-title{font-size:13px;font-weight:600;color:#fff;letter-spacing:-.4px}
+.app-subtitle{font-size:9px;color:rgba(255,255,255,.35);margin-top:1px}
+.notif-bell{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;position:relative;border:1px solid rgba(255,255,255,.1)}
+.notif-bell svg{stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.notif-badge{position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:50%;background:#F87171;border:1.5px solid #080C14}
+.mini-metrics{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px}
+.mm{background:rgba(255,255,255,.05);border-radius:10px;padding:9px 10px;border:1px solid rgba(255,255,255,.07);position:relative;overflow:hidden}
+.mm::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,214,143,.05) 0%,transparent 60%)}
+.mm-val{font-size:17px;font-weight:700;color:#fff;line-height:1;letter-spacing:-.8px}
+.mm-lbl{font-size:8.5px;color:rgba(255,255,255,.35);margin-top:2px;letter-spacing:.05em;text-transform:uppercase;font-weight:500}
+.mm-delta{font-size:9px;font-weight:600;margin-top:2px}
+.s1-chart{background:rgba(255,255,255,.03);border-radius:10px;padding:10px;margin-bottom:8px;border:1px solid rgba(255,255,255,.06)}
+.s1-chart-lbl{font-size:8.5px;color:rgba(255,255,255,.35);margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase;display:flex;justify-content:space-between;font-weight:500}
+.s1-chart-lbl span{color:var(--br);font-weight:600}
+.s1-sparkline{width:100%;height:52px;display:block}
+.spark-line{stroke:url(#lineGrad);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:500;stroke-dashoffset:500;animation:lineAnim 1.8s ease both .4s forwards}
+.mini-bars-row{display:flex;align-items:flex-end;gap:3px;height:36px;margin-top:6px}
+.mbar{border-radius:2px 2px 0 0;flex:1;animation:barGrow .6s ease both}
+.recent-list{display:flex;flex-direction:column;gap:5px}
+.ri{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.03);border-radius:7px;padding:5px 8px;border:1px solid rgba(255,255,255,.05)}
+.ri-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.ri-txt{font-size:9px;color:rgba(255,255,255,.55);flex:1;font-weight:500}
+.ri-t{font-size:8.5px;color:rgba(255,255,255,.25)}
+.big-num{font-size:34px;font-weight:700;color:#fff;letter-spacing:-2px;line-height:1;animation:countUp .6s ease both .2s}
+.big-sub{font-size:9.5px;color:rgba(255,255,255,.35);margin-top:3px;margin-bottom:12px}
+.seg-btns{display:flex;gap:4px;margin-bottom:8px}
+.seg{padding:4px 10px;border-radius:6px;font-size:9px;font-weight:600;border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.35);transition:all .2s;background:transparent}
+.seg.on{background:var(--br);border-color:var(--br);color:#000}
+.line-chart-wrap{background:rgba(255,255,255,.03);border-radius:10px;padding:10px;margin-bottom:10px;border:1px solid rgba(255,255,255,.06)}
+.progress-rows{display:flex;flex-direction:column;gap:8px}
+.pr-row{display:flex;flex-direction:column;gap:3px}
+.pr-head{display:flex;justify-content:space-between;font-size:9px}
+.pr-label{color:rgba(255,255,255,.4)}
+.pr-val{color:rgba(255,255,255,.7);font-weight:600}
+.pr-track{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
+.pr-fill{height:100%;border-radius:2px;animation:progressFill .9s ease both .3s}
+.notif-cards{display:flex;flex-direction:column;gap:6px}
+.nc{background:rgba(255,255,255,.04);border-radius:10px;padding:9px 10px;border:1px solid rgba(255,255,255,.07);display:flex;gap:8px;align-items:flex-start}
+.nc-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nc-body{flex:1}
+.nc-title{font-size:10px;font-weight:600;color:#fff;margin-bottom:2px;letter-spacing:-.2px}
+.nc-msg{font-size:8.5px;color:rgba(255,255,255,.4);line-height:1.4}
+.nc-time{font-size:7.5px;color:rgba(255,255,255,.2);margin-top:3px}
+.nc-dot{width:5px;height:5px;border-radius:50%;background:var(--br);flex-shrink:0;margin-top:4px}
+.phone-tabs{display:flex;justify-content:space-around;padding:7px 0 9px;border-top:1px solid rgba(255,255,255,.06);position:absolute;bottom:0;left:0;right:0;background:rgba(8,12,20,.95);backdrop-filter:blur(10px)}
+.pt{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;padding:3px 0;font-size:7.5px;color:rgba(255,255,255,.25);transition:color .2s;font-weight:600}
+.pt.on{color:var(--br)}
+.pt svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.logos{border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:1.75rem 2.5rem;display:flex;align-items:center;gap:3rem;background:var(--bg)}
+.logos-lbl{font-size:.68rem;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;font-weight:600}
+.logos-items{display:flex;gap:3.5rem;flex:1;justify-content:space-around}
+.logo-item{font-size:.875rem;color:var(--ink3);font-weight:600;transition:color .2s;cursor:default;letter-spacing:-.2px}
+.logo-item:hover{color:var(--ink)}
+.stats-strip{background:linear-gradient(90deg,rgba(0,214,143,.07) 0%,rgba(129,140,248,.07) 100%);border-top:1px solid rgba(0,214,143,.12);border-bottom:1px solid rgba(0,214,143,.12);padding:1.25rem 2.5rem;display:flex;gap:4rem;justify-content:center}
+.stat-item{display:flex;align-items:center;gap:.875rem;white-space:nowrap}
+.stat-num{font-size:2rem;font-weight:700;color:var(--ink);letter-spacing:-1.5px}
+.stat-lbl{font-size:.8rem;color:var(--ink2)}
+.stat-div{width:1px;height:2rem;background:rgba(255,255,255,.08)}
+.features{padding:6rem 2.5rem;max-width:1100px;margin:0 auto}
+.sec-eyebrow{font-size:.7rem;color:var(--br);font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.875rem;display:block;font-family:'Space Grotesk',sans-serif}
+.sec-h{font-family:'Space Grotesk',sans-serif;font-size:2.6rem;font-weight:700;letter-spacing:-2px;margin-bottom:.75rem;line-height:1.1;color:var(--ink)}
+.sec-sub{font-size:.95rem;color:var(--ink2);line-height:1.75;margin-bottom:3.5rem;max-width:480px}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.06);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.feat{background:var(--bg);padding:2rem;transition:background .25s;position:relative;overflow:hidden}
+.feat::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 0% 0%,rgba(0,214,143,.06) 0%,transparent 60%);opacity:0;transition:opacity .3s}
+.feat:hover{background:var(--bg2)}
+.feat:hover::before{opacity:1}
+.feat-icon{width:44px;height:44px;border-radius:12px;background:var(--brl);border:1px solid rgba(0,214,143,.2);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem}
+.feat-icon svg{stroke:var(--br);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.feat-ttl{font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:.5rem;letter-spacing:-.4px}
+.feat-desc{font-size:.85rem;color:var(--ink2);line-height:1.7}
+.how{padding:6rem 2.5rem;background:var(--bg2);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.how-inner{max-width:960px;margin:0 auto}
+.steps{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1.5rem;margin-top:3.5rem;position:relative}
+.steps::before{content:'';position:absolute;top:27px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,214,143,.3),transparent)}
+.step{text-align:center;position:relative;z-index:1}
+.step-num{width:54px;height:54px;border-radius:50%;background:var(--bg3);border:1px solid rgba(0,214,143,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;color:var(--br);transition:all .3s;letter-spacing:-1px}
+.step:hover .step-num{background:var(--br);color:#000;border-color:var(--br);box-shadow:0 0 30px rgba(0,214,143,.4)}
+.step-title{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;color:var(--ink);margin-bottom:.4rem;letter-spacing:-.3px}
+.step-desc{font-size:.8rem;color:var(--ink2);line-height:1.65}
+.orbit-section{padding:6rem 2.5rem;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.orbit-left p{font-size:.95rem;color:var(--ink2);line-height:1.75;margin-bottom:2rem}
+.int-chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{display:flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.35rem .8rem;font-size:.78rem;color:var(--ink2);transition:all .2s;font-weight:500;letter-spacing:-.2px}
+.chip:hover{border-color:var(--br);color:var(--br);background:var(--brl)}
+.chip svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.orbit-diagram{position:relative;width:380px;height:380px;margin:0 auto}
+.orbit-ring-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.orbit-center-node{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:22px;background:linear-gradient(135deg,var(--br) 0%,var(--brd) 100%);display:flex;align-items:center;justify-content:center;z-index:5;box-shadow:0 0 40px rgba(0,214,143,.4),0 0 80px rgba(0,214,143,.15);animation:glow 3s ease-in-out infinite}
+.orbit-center-node svg{stroke:#000;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;width:32px;height:32px}
+.onode{position:absolute;top:50%;left:50%;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;z-index:4;margin-top:-26px;margin-left:-26px;border:1px solid rgba(255,255,255,.1)}
+.onode svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.onode-0{animation:orbit0 16s linear infinite;--r:148px}
+.onode-1{animation:orbit1 16s linear infinite;--r:148px}
+.onode-2{animation:orbit2 16s linear infinite;--r:148px}
+.onode-3{animation:orbit3 16s linear infinite;--r:148px}
+.onode-4{animation:orbit4 16s linear infinite;--r:148px}
+.onode-5{animation:orbit5 16s linear infinite;--r:148px}
+.onode-6{animation:orbit6 16s linear infinite;--r:148px}
+.testi-section{padding:6rem 2.5rem;max-width:1100px;margin:0 auto}
+.testi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;margin-top:3.5rem}
+.testi-card{background:var(--bg2);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:1.75rem;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
+.testi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--br),var(--pu));opacity:0;transition:opacity .3s}
+.testi-card:hover{border-color:rgba(0,214,143,.3);transform:translateY(-4px)}
+.testi-card:hover::before{opacity:1}
+.stars{color:var(--acc);font-size:.9rem;letter-spacing:2px;margin-bottom:1rem}
+.testi-text{font-size:.875rem;color:var(--ink2);line-height:1.75;margin-bottom:1.25rem;font-style:italic}
+.testi-auth{display:flex;align-items:center;gap:.75rem}
+.tav{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;border:2px solid rgba(255,255,255,.08);font-family:'Space Grotesk',sans-serif}
+.tname{font-weight:600;font-size:.85rem;color:var(--ink);letter-spacing:-.3px}
+.trole{font-size:.75rem;color:var(--ink2)}
+.pricing{padding:6rem 2.5rem;background:var(--bg2);border-top:1px solid rgba(255,255,255,.06)}
+.pricing-inner{max-width:960px;margin:0 auto}
+.price-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;margin-top:3.5rem}
+.pc{background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;transition:all .3s;position:relative;overflow:hidden}
+.pc:hover{border-color:rgba(0,214,143,.3);transform:translateY(-4px)}
+.pc.feat2{background:linear-gradient(135deg,rgba(0,214,143,.08) 0%,rgba(129,140,248,.04) 100%);border-color:rgba(0,214,143,.3)}
+.pc.feat2::before{content:'Most popular';position:absolute;top:1rem;right:1rem;background:var(--br);color:#000;font-size:.65rem;font-weight:700;padding:.2rem .6rem;border-radius:100px;letter-spacing:.04em;text-transform:uppercase;font-family:'Space Grotesk',sans-serif}
+.pp{font-family:'Space Grotesk',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);margin-bottom:.75rem}
+.pc.feat2 .pp{color:var(--br)}
+.pamt{font-family:'Space Grotesk',sans-serif;font-size:2.75rem;font-weight:700;letter-spacing:-2px;color:var(--ink);line-height:1}
+.pper{font-size:.8rem;color:var(--ink3);margin-left:.25rem}
+.pdesc{font-size:.82rem;color:var(--ink2);margin:.75rem 0 1.5rem;line-height:1.65}
+.plist{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-bottom:2rem}
+.plist li{font-size:.82rem;color:var(--ink2);display:flex;align-items:center;gap:.65rem}
+.plist li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--br);flex-shrink:0}
+.pbtn{width:100%;padding:.85rem;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:.875rem;font-weight:600;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--ink);transition:all .2s;letter-spacing:-.2px}
+.pbtn:hover{border-color:var(--br);color:var(--br)}
+.pc.feat2 .pbtn{background:var(--br);border-color:var(--br);color:#000}
+.pc.feat2 .pbtn:hover{box-shadow:0 4px 20px rgba(0,214,143,.3)}
+.cta-banner{padding:6rem 2.5rem;background:var(--bg);text-align:center;position:relative;overflow:hidden;border-top:1px solid rgba(255,255,255,.06)}
+.cta-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,214,143,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,214,143,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,rgba(0,0,0,.5) 0%,transparent 70%)}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(0,214,143,.07) 0%,transparent 70%);pointer-events:none}
+.cta-inner{max-width:580px;margin:0 auto;position:relative;z-index:1}
+.cta-banner h2{font-family:'Space Grotesk',sans-serif;font-size:3rem;font-weight:700;letter-spacing:-2.5px;color:var(--ink);line-height:1.08;margin-bottom:1.25rem}
+.cta-banner p{color:var(--ink2);font-size:1rem;line-height:1.75;margin-bottom:2.25rem}
+.cta-btns{display:flex;gap:1rem;justify-content:center}
+.cta-btn1{background:var(--br);color:#000;border:none;padding:.9rem 2.25rem;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;transition:all .25s;letter-spacing:-.2px}
+.cta-btn1:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,214,143,.4)}
+.cta-btn2{background:var(--card);color:var(--ink);border:1px solid rgba(255,255,255,.1);padding:.9rem 1.75rem;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:500;transition:all .2s;backdrop-filter:blur(10px)}
+.cta-btn2:hover{border-color:var(--br);color:var(--br)}
+footer{border-top:1px solid rgba(255,255,255,.06);padding:2.25rem 2.5rem;display:flex;align-items:center;justify-content:space-between;background:var(--bg)}
+.flogo{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;color:var(--ink);letter-spacing:-1px}
+.flogo span{color:var(--br)}
+.flinks{display:flex;gap:2rem}
+.flinks a{font-size:.8rem;color:var(--ink3);text-decoration:none;transition:color .2s;font-weight:500;font-family:'Space Grotesk',sans-serif}
+.flinks a:hover{color:var(--ink)}
+.fcopy{font-size:.72rem;color:var(--ink3)}
+.toast{position:fixed;bottom:24px;right:24px;background:rgba(14,20,25,.95);border:1px solid rgba(0,214,143,.25);border-radius:12px;padding:.75rem 1.1rem;display:flex;align-items:center;gap:.75rem;font-size:.8rem;z-index:999;backdrop-filter:blur(20px);animation:notifSlide 4s ease both 2s;font-family:'Space Grotesk',sans-serif;font-weight:500}
+.toast-dot{width:8px;height:8px;border-radius:50%;background:var(--br);animation:pulse 1.5s infinite}
+</style>
+
+<!-- Custom cursor elements -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="ic-chart" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+  <symbol id="ic-bolt" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="ic-plug" viewBox="0 0 24 24"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8H6a2 2 0 0 0-2 2v3a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4v-3a2 2 0 0 0-2-2z"/></symbol>
+  <symbol id="ic-brain" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-1.96-3 2.5 2.5 0 0 1-1.32-4.24 3 3 0 0 1 .34-5.58 2.5 2.5 0 0 1 1.32-4.24A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 1.96-3 2.5 2.5 0 0 0 1.32-4.24 3 3 0 0 0-.34-5.58 2.5 2.5 0 0 0-1.32-4.24A2.5 2.5 0 0 0 14.5 2Z"/></symbol>
+  <symbol id="ic-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="ic-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="ic-trending" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
+  <symbol id="ic-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+  <symbol id="ic-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="ic-bar" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+  <symbol id="ic-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="ic-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="ic-stripe" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></symbol>
+  <symbol id="ic-slack" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="ic-github" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></symbol>
+  <symbol id="ic-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></symbol>
+  <symbol id="ic-mail" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+  <symbol id="ic-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></symbol>
+</svg>
+
+<nav>
+  <div class="logo">stride<span>.</span></div>
+  <ul class="nav-links"><li><a href="#">Product</a></li><li><a href="#">Features</a></li><li><a href="#">Pricing</a></li><li><a href="#">Docs</a></li></ul>
+  <div class="nav-right">
+    <button class="nav-log">Sign in</button>
+    <button class="nav-cta">Get started →</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-blob1"></div><div class="hero-blob2"></div>
+  <div class="hero-left">
+    <div class="hero-badge"><span class="pulse-dot"></span>Now with AI insights</div>
+    <h1>Ship faster.<br><span class="grad">Know more.</span><br>Scale boldly.</h1>
+    <p class="hero-sub">Stride gives your team a single source of truth — real-time analytics, automated workflows, and deep integrations without the complexity.</p>
+    <div class="cta-row">
+      <button class="btn-p">Start free trial ↗</button>
+      <button class="btn-g">Watch demo →</button>
+    </div>
+    <div class="social-proof">
+      <div class="avatars">
+        <div class="av" style="background:#1a3d2e;color:#00D68F">AM</div>
+        <div class="av" style="background:#1e1b4b;color:#818CF8">BK</div>
+        <div class="av" style="background:#3d2e1a;color:#F59E0B">JL</div>
+        <div class="av" style="background:#3d1a1a;color:#F87171">RP</div>
+      </div>
+      <p class="proof-text"><strong>4,200+</strong> teams already on Stride</p>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Tags now pill-shaped and very close to phone -->
+    <div class="fw fw1">
+      <div class="fw-dot" style="background:#00D68F"></div>
+      Revenue <strong style="color:#fff">↑ 34%</strong>
+    </div>
+    <div class="fw fw2">
+      <div class="fw-dot" style="background:#F59E0B"></div>
+      Churn risk <strong style="color:#fff">0.3%</strong>
+    </div>
+    <div class="fw fw3" style="gap:.5rem">
+      <svg width="12" height="12" style="stroke:#00D68F;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><use href="#ic-trending"/></svg>
+      ARR on track
+    </div>
+
+    <div class="phone">
+      <div class="phone-notch"><div class="notch-sensor"></div><div class="notch-cam"></div></div>
+      <div class="phone-screen">
+        <div class="phone-status">
+          <span class="phone-time">9:41</span>
+          <div style="display:flex;gap:3px;align-items:flex-end"><div class="sig-bar" style="height:5px"></div><div class="sig-bar" style="height:8px"></div><div class="sig-bar" style="height:11px"></div><div class="sig-bar" style="height:14px"></div></div>
+        </div>
+        <div class="app-screens" id="screens">
+          <div class="app-screen active" id="s1">
+            <div class="app-header"><div><div class="app-title">Dashboard</div><div class="app-subtitle">Good morning, Sofia</div></div><div class="notif-bell"><svg width="13" height="13"><use href="#ic-bell"/></svg><div class="notif-badge"></div></div></div>
+            <div class="mini-metrics">
+              <div class="mm"><div class="mm-val">$82k</div><div class="mm-lbl">MRR</div><div class="mm-delta" style="color:#00D68F">↑ 12.4%</div></div>
+              <div class="mm"><div class="mm-val">1,847</div><div class="mm-lbl">Users</div><div class="mm-delta" style="color:#00D68F">↑ 8.1%</div></div>
+              <div class="mm"><div class="mm-val">94%</div><div class="mm-lbl">Retention</div><div class="mm-delta" style="color:#00D68F">↑ 2.3%</div></div>
+              <div class="mm"><div class="mm-val">$3.2k</div><div class="mm-lbl">ARPU</div><div class="mm-delta" style="color:#F59E0B">→ 0%</div></div>
+            </div>
+            <div class="s1-chart">
+              <div class="s1-chart-lbl">Revenue — last 14 days <span>+12.4%</span></div>
+              <svg class="s1-sparkline" viewBox="0 0 220 52" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#00D68F"/><stop offset="100%" stop-color="#818CF8"/></linearGradient>
+                  <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00D68F" stop-opacity=".2"/><stop offset="100%" stop-color="#00D68F" stop-opacity="0"/></linearGradient>
+                </defs>
+                <polygon fill="url(#areaGrad)" points="0,52 10,44 25,47 40,34 55,37 70,27 85,31 100,19 115,23 130,14 145,17 160,9 175,12 190,5 205,8 220,3 220,52"/>
+                <polyline class="spark-line" points="10,44 25,47 40,34 55,37 70,27 85,31 100,19 115,23 130,14 145,17 160,9 175,12 190,5 205,8 220,3"/>
+                <circle cx="220" cy="3" r="3" fill="#00D68F"/>
+              </svg>
+              <div class="mini-bars-row" id="mbars2"></div>
+            </div>
+            <div class="recent-list">
+              <div class="ri"><div class="ri-dot" style="background:#00D68F"></div><span class="ri-txt">Enterprise plan activated</span><span class="ri-t">2m</span></div>
+              <div class="ri"><div class="ri-dot" style="background:#F59E0B"></div><span class="ri-txt">Automation triggered</span><span class="ri-t">9m</span></div>
+              <div class="ri"><div class="ri-dot" style="background:#818CF8"></div><span class="ri-txt">Stripe connected</span><span class="ri-t">21m</span></div>
+            </div>
+          </div>
+          <div class="app-screen" id="s2">
+            <div class="app-header"><div><div class="app-title">Analytics</div><div class="app-subtitle">May 2026</div></div><div class="notif-bell"><svg width="13" height="13"><use href="#ic-calendar"/></svg></div></div>
+            <div class="big-num" id="bigNum">$982k</div><div class="big-sub">Total revenue YTD</div>
+            <div class="seg-btns"><div class="seg on" onclick="setSeg(this,'7D')">7D</div><div class="seg" onclick="setSeg(this,'30D')">30D</div><div class="seg" onclick="setSeg(this,'90D')">90D</div><div class="seg" onclick="setSeg(this,'1Y')">1Y</div></div>
+            <div class="line-chart-wrap"><svg width="100%" height="60" viewBox="0 0 210 60" id="linechart"></svg></div>
+            <div class="progress-rows">
+              <div class="pr-row"><div class="pr-head"><span class="pr-label">New customers</span><span class="pr-val">847</span></div><div class="pr-track"><div class="pr-fill" style="--w:72%;width:72%;background:linear-gradient(90deg,#00D68F,#818CF8)"></div></div></div>
+              <div class="pr-row"><div class="pr-head"><span class="pr-label">Upgrades</span><span class="pr-val">312</span></div><div class="pr-track"><div class="pr-fill" style="--w:45%;width:45%;background:#818CF8"></div></div></div>
+              <div class="pr-row"><div class="pr-head"><span class="pr-label">Churned</span><span class="pr-val">28</span></div><div class="pr-track"><div class="pr-fill" style="--w:8%;width:8%;background:#F87171"></div></div></div>
+            </div>
+          </div>
+          <div class="app-screen" id="s3">
+            <div class="app-header"><div><div class="app-title">Alerts</div><div class="app-subtitle">3 new notifications</div></div><div class="notif-bell"><svg width="13" height="13"><use href="#ic-check"/></svg></div></div>
+            <div class="notif-cards">
+              <div class="nc"><div class="nc-icon" style="background:rgba(0,214,143,.12)"><svg width="13" height="13" style="stroke:#00D68F;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><use href="#ic-trending"/></svg></div><div class="nc-body"><div class="nc-title">Revenue milestone hit</div><div class="nc-msg">MRR crossed $80k — up 12.4%.</div><div class="nc-time">Just now</div></div><div class="nc-dot"></div></div>
+              <div class="nc"><div class="nc-icon" style="background:rgba(245,158,11,.12)"><svg width="13" height="13" style="stroke:#F59E0B;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><use href="#ic-alert"/></svg></div><div class="nc-body"><div class="nc-title">Churn risk detected</div><div class="nc-msg">3 accounts show low engagement.</div><div class="nc-time">14m ago</div></div><div class="nc-dot" style="background:#F59E0B"></div></div>
+              <div class="nc"><div class="nc-icon" style="background:rgba(129,140,248,.12)"><svg width="13" height="13" style="stroke:#818CF8;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><use href="#ic-plug"/></svg></div><div class="nc-body"><div class="nc-title">Integration connected</div><div class="nc-msg">Salesforce CRM synced.</div><div class="nc-time">1h ago</div></div></div>
+              <div class="nc"><div class="nc-icon" style="background:rgba(0,214,143,.12)"><svg width="13" height="13" style="stroke:#00D68F;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><use href="#ic-users"/></svg></div><div class="nc-body"><div class="nc-title">New team member</div><div class="nc-msg">Aisha Laurent joined workspace.</div><div class="nc-time">3h ago</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-tabs">
+          <div class="pt on" id="t1" onclick="switchScreen(1)"><svg><use href="#ic-home"/></svg>Home</div>
+          <div class="pt" id="t2" onclick="switchScreen(2)"><svg><use href="#ic-bar"/></svg>Analytics</div>
+          <div class="pt" id="t3" onclick="switchScreen(3)"><svg><use href="#ic-bell"/></svg>Alerts</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="logos"><span class="logos-lbl">Trusted by</span><div class="logos-items"><span class="logo-item">Notion</span><span class="logo-item">Linear</span><span class="logo-item">Vercel</span><span class="logo-item">Loom</span><span class="logo-item">Retool</span></div></div>
+<div class="stats-strip">
+  <div class="stat-item"><span class="stat-num">4.2k+</span><span class="stat-lbl">Teams worldwide</span></div>
+  <div class="stat-div"></div>
+  <div class="stat-item"><span class="stat-num">$1.8B</span><span class="stat-lbl">Revenue tracked</span></div>
+  <div class="stat-div"></div>
+  <div class="stat-item"><span class="stat-num">99.9%</span><span class="stat-lbl">Uptime SLA</span></div>
+  <div class="stat-div"></div>
+  <div class="stat-item"><span class="stat-num">150+</span><span class="stat-lbl">Integrations</span></div>
+</div>
+
+<section class="features">
+  <span class="sec-eyebrow">What you get</span>
+  <h2 class="sec-h">Built for teams<br>who move fast</h2>
+  <p class="sec-sub">Every feature designed around one question: does this help you ship and grow faster?</p>
+  <div class="feat-grid">
+    <div class="feat"><div class="feat-icon"><svg width="20" height="20"><use href="#ic-chart"/></svg></div><div class="feat-ttl">Real-time analytics</div><p class="feat-desc">Live dashboards that update the moment data changes. No more stale reports.</p></div>
+    <div class="feat"><div class="feat-icon"><svg width="20" height="20"><use href="#ic-bolt"/></svg></div><div class="feat-ttl">Workflow automation</div><p class="feat-desc">Build automations with a visual editor. Trigger actions with zero code.</p></div>
+    <div class="feat"><div class="feat-icon"><svg width="20" height="20"><use href="#ic-plug"/></svg></div><div class="feat-ttl">150+ integrations</div><p class="feat-desc">Connect Slack, Salesforce, GitHub, Stripe and more in minutes.</p></div>
+    <div class="feat"><div class="feat-icon"><svg width="20" height="20"><use href="#ic-brain"/></svg></div><div class="feat-ttl">AI-powered insights</div><p class="feat-desc">Surface anomalies, predict churn, and get proactive recommendations.</p></div>
+    <div class="feat"><div class="feat-icon"><svg width="20" height="20"><use href="#ic-users"/></svg></div><div class="feat-ttl">Team collaboration</div><p class="feat-desc">Shared workspaces, role-based permissions, and audit logs.</p></div>
+    <div class="feat"><div class="feat-icon"><svg width="20" height="20"><use href="#ic-shield"/></svg></div><div class="feat-ttl">Enterprise-ready</div><p class="feat-desc">SOC 2 Type II, SSO, custom data residency, and matching SLAs.</p></div>
+  </div>
+</section>
+
+<section class="how"><div class="how-inner">
+  <span class="sec-eyebrow">How it works</span>
+  <h2 class="sec-h">Up and running in minutes</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-title">Connect your tools</div><p class="step-desc">Plug in Stripe, Salesforce, or any of 150+ integrations in one click.</p></div>
+    <div class="step"><div class="step-num">2</div><div class="step-title">Data flows in</div><p class="step-desc">Stride unifies all your data into one normalized, queryable source.</p></div>
+    <div class="step"><div class="step-num">3</div><div class="step-title">Build dashboards</div><p class="step-desc">Drag-and-drop charts, metrics, and reports for every team.</p></div>
+    <div class="step"><div class="step-num">4</div><div class="step-title">Act on insights</div><p class="step-desc">Automate responses to changes before they become problems.</p></div>
+  </div>
+</div></section>
+
+<section class="orbit-section">
+  <div class="orbit-left">
+    <span class="sec-eyebrow">Integrations</span>
+    <h2 class="sec-h">Your whole stack,<br>connected</h2>
+    <p>Works with the tools you already use — no ripping and replacing.</p>
+    <div class="int-chips">
+      <div class="chip"><svg><use href="#ic-stripe"/></svg>Stripe</div>
+      <div class="chip"><svg><use href="#ic-slack"/></svg>Slack</div>
+      <div class="chip"><svg><use href="#ic-github"/></svg>GitHub</div>
+      <div class="chip"><svg><use href="#ic-db"/></svg>Postgres</div>
+      <div class="chip"><svg><use href="#ic-mail"/></svg>HubSpot</div>
+      <div class="chip"><svg><use href="#ic-cloud"/></svg>Snowflake</div>
+      <div class="chip"><svg><use href="#ic-bar"/></svg>Amplitude</div>
+      <div class="chip" style="color:var(--ink3)">+143 more →</div>
+    </div>
+  </div>
+  <div class="orbit-diagram">
+    <svg class="orbit-ring-svg" viewBox="0 0 380 380" fill="none">
+      <circle cx="190" cy="190" r="148" stroke="rgba(0,214,143,.15)" stroke-width="1" stroke-dasharray="6 6"/>
+      <circle cx="190" cy="190" r="90" stroke="rgba(129,140,248,.1)" stroke-width="1" stroke-dasharray="4 6"/>
+    </svg>
+    <div class="orbit-center-node"><svg><use href="#ic-bolt"/></svg></div>
+    <div class="onode onode-0" style="background:rgba(0,214,143,.12);color:#00D68F"><svg><use href="#ic-stripe"/></svg></div>
+    <div class="onode onode-1" style="background:rgba(129,140,248,.12);color:#818CF8"><svg><use href="#ic-slack"/></svg></div>
+    <div class="onode onode-2" style="background:rgba(248,113,113,.1);color:#F87171"><svg><use href="#ic-github"/></svg></div>
+    <div class="onode onode-3" style="background:rgba(245,158,11,.1);color:#F59E0B"><svg><use href="#ic-db"/></svg></div>
+    <div class="onode onode-4" style="background:rgba(99,179,237,.1);color:#63B3ED"><svg><use href="#ic-mail"/></svg></div>
+    <div class="onode onode-5" style="background:rgba(154,230,180,.1);color:#9AE6B4"><svg><use href="#ic-cloud"/></svg></div>
+    <div class="onode onode-6" style="background:rgba(183,148,244,.1);color:#B794F4"><svg><use href="#ic-bar"/></svg></div>
+  </div>
+</section>
+
+<section class="testi-section">
+  <span class="sec-eyebrow">What teams say</span>
+  <h2 class="sec-h">Loved by operators</h2>
+  <div class="testi-grid">
+    <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Stride cut our reporting time by 80% and gave us the visibility to double revenue in a year."</p><div class="testi-auth"><div class="tav" style="background:#1a3d2e;color:#00D68F">SR</div><div><div class="tname">Sofia Reyes</div><div class="trole">Head of Growth, Loom</div></div></div></div>
+    <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Finally one place for all our metrics. The AI flagged a churn spike before our CS team noticed."</p><div class="testi-auth"><div class="tav" style="background:#1e1b4b;color:#818CF8">MK</div><div><div class="tname">Marcus Kim</div><div class="trole">CEO, Beam Analytics</div></div></div></div>
+    <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Setup took 20 minutes. We had live dashboards for every department the same afternoon."</p><div class="testi-auth"><div class="tav" style="background:#3d2e1a;color:#F59E0B">AL</div><div><div class="tname">Aisha Laurent</div><div class="trole">VP Ops, Retool</div></div></div></div>
+  </div>
+</section>
+
+<section class="pricing"><div class="pricing-inner">
+  <span class="sec-eyebrow">Pricing</span>
+  <h2 class="sec-h">Simple, honest pricing</h2>
+  <div class="price-grid">
+    <div class="pc"><p class="pp">Starter</p><div><span class="pamt">$0</span><span class="pper">/mo</span></div><p class="pdesc">Perfect for solo founders and small projects.</p><ul class="plist"><li>Up to 3 users</li><li>5 active workflows</li><li>7-day history</li><li>Community support</li></ul><button class="pbtn">Get started free</button></div>
+    <div class="pc feat2"><p class="pp">Growth</p><div><span class="pamt">$49</span><span class="pper">/mo</span></div><p class="pdesc">For growing teams that need power and visibility.</p><ul class="plist"><li>Up to 25 users</li><li>Unlimited workflows</li><li>1-year history</li><li>AI insights</li><li>Priority support</li></ul><button class="pbtn">Start 14-day trial</button></div>
+    <div class="pc"><p class="pp">Enterprise</p><div><span class="pamt">Custom</span></div><p class="pdesc">Tailored for large orgs with custom security needs.</p><ul class="plist"><li>Unlimited users</li><li>SSO & SCIM</li><li>Custom residency</li><li>Dedicated CSM</li></ul><button class="pbtn">Talk to sales</button></div>
+  </div>
+</div></section>
+
+<div class="cta-banner">
+  <div class="cta-grid-bg"></div><div class="cta-glow"></div>
+  <div class="cta-inner">
+    <h2>Ready to <span class="grad">grow faster?</span></h2>
+    <p>Join 4,200+ teams using Stride to turn data into decisions.</p>
+    <div class="cta-btns">
+      <button class="cta-btn1">Start free trial ↗</button>
+      <button class="cta-btn2">Schedule a demo</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="flogo">stride<span>.</span></div>
+  <div class="flinks"><a href="#">Product</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Privacy</a><a href="#">Status</a></div>
+  <p class="fcopy">© 2026 Stride Inc.</p>
+</footer>
+
+<div class="toast"><div class="toast-dot"></div><span style="color:var(--ink2)"><strong style="color:var(--ink)">New signup</strong> — Acme Corp just joined Stride</span></div>
+
+<script>
+// ── CUSTOM CURSOR ──
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mouseX = 0, mouseY = 0;
+let ringX = 0, ringY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  dot.style.left = mouseX + 'px';
+  dot.style.top = mouseY + 'px';
+});
+
+// Ring follows with smooth lag
+function animateRing() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  ring.style.left = ringX + 'px';
+  ring.style.top = ringY + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+// Hover effect on interactive elements
+const hoverTargets = document.querySelectorAll('button, a, .feat, .testi-card, .pc, .chip, .pt, .onode, .step-num, .mm');
+hoverTargets.forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    document.body.classList.add('cursor-hover');
+    ring.style.borderColor = 'rgba(0,214,143,.9)';
+    ring.style.background = 'rgba(0,214,143,.07)';
+  });
+  el.addEventListener('mouseleave', () => {
+    document.body.classList.remove('cursor-hover');
+    ring.style.borderColor = 'rgba(0,214,143,.5)';
+    ring.style.background = 'transparent';
+  });
+});
+
+// ── PHONE ──
+function switchScreen(n){[1,2,3].forEach(i=>{document.getElementById('s'+i).classList.toggle('active',i===n);document.getElementById('t'+i).classList.toggle('on',i===n);})}
+const barsEl=document.getElementById('mbars2');
+[28,38,32,52,44,65,50,60,46,75,58,70,52,82].forEach((h,i)=>{const b=document.createElement('div');b.className='mbar';b.style.cssText='--h:'+h+'%;height:'+h+'%;background:'+(i===13?'#00D68F':'rgba(0,214,143,.2)')+';animation-delay:'+(i*.04)+'s;border-radius:2px 2px 0 0;flex:1';barsEl.appendChild(b);});
+const lc=document.getElementById('linechart');
+const pts=[[0,52],[20,44],[40,50],[60,32],[80,36],[100,22],[120,30],[140,17],[160,20],[180,12],[200,7],[210,10]];
+const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+defs.innerHTML='<linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00D68F" stop-opacity=".15"/><stop offset="100%" stop-color="#00D68F" stop-opacity="0"/></linearGradient>';
+lc.appendChild(defs);
+const area=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+area.setAttribute('points','0,60 '+pts.map(p=>p.join(',')).join(' ')+' 210,60');area.setAttribute('fill','url(#lg2)');
+const poly=document.createElementNS('http://www.w3.org/2000/svg','polyline');
+poly.setAttribute('points',pts.map(p=>p.join(',')).join(' '));poly.setAttribute('fill','none');poly.setAttribute('stroke','#00D68F');poly.setAttribute('stroke-width','1.5');poly.setAttribute('stroke-linecap','round');poly.setAttribute('stroke-linejoin','round');
+const dotEl=document.createElementNS('http://www.w3.org/2000/svg','circle');
+dotEl.setAttribute('cx','210');dotEl.setAttribute('cy','10');dotEl.setAttribute('r','3');dotEl.setAttribute('fill','#00D68F');
+lc.appendChild(area);lc.appendChild(poly);lc.appendChild(dotEl);
+function setSeg(el,label){document.querySelectorAll('.seg').forEach(s=>s.classList.remove('on'));el.classList.add('on');document.getElementById('bigNum').textContent={'7D':'$82k','30D':'$312k','90D':'$680k','1Y':'$982k'}[label]||'$982k';}
+let autoIdx=1;setInterval(()=>{autoIdx=autoIdx%3+1;switchScreen(autoIdx);},4000);
+</script>
